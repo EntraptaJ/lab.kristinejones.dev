@@ -13,6 +13,7 @@ import { Switch, useStyles } from './Styles';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useContainerLogsSubscription } from './containerExec.gen';
 import { useExecCommandMutation } from './execCommand.gen';
+import { ansiToJSON, convertBundleIntoReact } from './RawLogger'
 
 export function ContainerShell({
   containerId,
@@ -44,7 +45,7 @@ export function ContainerShell({
   const consoleLog = useMemo(
     () =>
       history.map((result) => (
-        <Typography variant='body1'>{result}</Typography>
+        <Typography variant='body1'>{ansiToJSON(result).map(convertBundleIntoReact.bind(null, false, false))}</Typography>
       )),
     [history],
   );

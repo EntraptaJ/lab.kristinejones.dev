@@ -14,7 +14,6 @@ import { DockerContainer } from './DockerModel';
 import { filesPubSub } from './FilesPubSub';
 import { Containers, logsPubSub } from './LogsPubSub';
 import { generateContainerArgs } from './Utils/generateArgs';
-import stripAnsi from 'strip-ansi';
 
 export const docker = new Docker();
 
@@ -88,7 +87,7 @@ export class DockerResolver {
     @Arg('containerId') containerId: string,
     @Root() buffer: Buffer
   ): String {
-    return stripAnsi(buffer.toString());
+    return buffer.toString();
   }
 
   @Subscription(() => String, {
