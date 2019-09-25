@@ -1,0 +1,3 @@
+mutation execCommand($containerId: String!, $command: String!) {
+  execCommand(containerId: $containerId, command: $command)
+}

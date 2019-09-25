@@ -1,0 +1,3 @@
+subscription containerLogs($containerId: String!) {
+  containerLogs(containerId: $containerId)
+}

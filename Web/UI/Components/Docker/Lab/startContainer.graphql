@@ -1,0 +1,3 @@
+mutation startContainer($containerId: String!) {
+  startContainer(Id: $containerId)
+}
