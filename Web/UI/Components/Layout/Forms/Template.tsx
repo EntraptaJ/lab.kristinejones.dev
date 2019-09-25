@@ -30,7 +30,6 @@ const Errors: ErrorItem[] = [
 
 const processError = (errorItem: ErrorItem, error: ApolloError) => {
   const Test = Object.entries(errorItem).every(([type, value]) => error[type as keyof ApolloError].includes(value));
-  console.log(Test)
 
 }
 
