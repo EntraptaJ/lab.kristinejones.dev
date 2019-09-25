@@ -37,6 +37,7 @@
     "p-event": "^4.1.0",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
+    "strip-ansi": "^5.2.0",
     "tar-fs": "^2.0.0",
     "tar-stream": "^2.1.0",
     "type-graphql": "^0.17.5",

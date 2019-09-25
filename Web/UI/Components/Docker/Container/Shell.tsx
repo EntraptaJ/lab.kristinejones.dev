@@ -1,32 +1,53 @@
 // Web/UI/Components/Docker/Container/Shell.tsx
-import React, {
-  useEffect,
-  useCallback,
-  useState,
-  ChangeEvent,
-  useMemo,
-} from 'react';
-import { useContainerLogsSubscription } from './containerExec.gen';
-import { BaseTextField } from 'UI/Components/Style/TextField/BaseTextField';
-import { useExecCommandMutation } from './execCommand.gen';
-import { HTMLInputTypes } from 'UI/Components/Style/Form/type';
 import Typography from '@material-ui/core/Typography';
-
-const Commands = [];
+import React, {
+  ChangeEvent,
+  useCallback,
+  useMemo,
+  useState,
+  useRef,
+  useEffect,
+} from 'react';
+import { BaseTextField } from 'UI/Components/Style/TextField/BaseTextField';
+import { Switch, useStyles } from './Styles';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { useContainerLogsSubscription } from './containerExec.gen';
+import { useExecCommandMutation } from './execCommand.gen';
 
 export function ContainerShell({
   containerId,
 }: {
   containerId: string;
 }): React.ReactElement {
+  const classes = useStyles({});
   const [execCommandFN] = useExecCommandMutation();
   const [command, setCommand] = useState<string>('');
-  const { data, loading } = useContainerLogsSubscription({
+  const [autoScroll, setAutoScroll] = useState<boolean>(false);
+  const shellDiv = useRef<HTMLDivElement>(null);
+  const [history, setHistory] = useState<string[]>([]);
+  useContainerLogsSubscription({
     variables: { containerId },
+    onSubscriptionData: ({
+      subscriptionData: {
+        data: { containerLogs },
+      },
+    }) => setHistory([...history, containerLogs]),
   });
-  const [history] = useState<string[]>([]);
-  if (!loading && history[history.length - 1] !== data.containerLogs)
-    history.push(data.containerLogs);
+
+  useEffect(() => {
+    if (!autoScroll || !shellDiv) return;
+    requestAnimationFrame(() =>
+      shellDiv.current.scrollIntoView({ block: 'end', behavior: 'smooth' }),
+    );
+  }, [history]);
+
+  const consoleLog = useMemo(
+    () =>
+      history.map((result) => (
+        <Typography variant='body1'>{result}</Typography>
+      )),
+    [history],
+  );
 
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => setCommand(target.value),
@@ -44,35 +65,33 @@ export function ContainerShell({
   );
 
   return (
-    <>
-      <div style={{ padding: '1em', height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: '#151515', color: 'white' }}>
-        <div
-          style={{
-            whiteSpace: 'pre-wrap',
-            overflowY: 'scroll',
-            color: 'white',
-            height: '100%'
-          }}
-        >
-          {history ? (
-            history.map((cmd) => <Typography variant='body1'>{cmd}</Typography>)
-          ) : (
-            <div>Loading</div>
-          )}
-        </div>
-        <div style={{ backgroundColor: '#eee', height: '10%', padding: '1em' }}>
-        <BaseTextField
+    <div className={classes.root}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={autoScroll}
+            onChange={({ target }) => setAutoScroll(target.checked)}
+            value='autoScroll'
+            color='primary'
+          />
+        }
+        label='Auto Scroll'
+      />
+      <div className={classes.shellBox}>
+        {...consoleLog}
+        <div ref={shellDiv} />
+      </div>
+      <BaseTextField
         value={command}
         onChange={handleChange}
         variant='outlined'
         label='Command'
         fullWidth
+        InputLabelProps={{ classes: { root: classes.textFieldLabel } }}
+        InputProps={{ className: classes.textInput }}
         onKeyPress={handleKeypress}
-        style={{ color: 'white'}}
+        classes={{ root: classes.textField }}
       />
-        </div>
-
-      </div>
-    </>
+    </div>
   );
 }

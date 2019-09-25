@@ -14,6 +14,7 @@ import { DockerContainer } from './DockerModel';
 import { filesPubSub } from './FilesPubSub';
 import { Containers, logsPubSub } from './LogsPubSub';
 import { generateContainerArgs } from './Utils/generateArgs';
+import stripAnsi from 'strip-ansi';
 
 export const docker = new Docker();
 
@@ -36,7 +37,7 @@ export class DockerResolver {
       containerId: container.id
     }).save();
 
-    setTimeout(() => container.remove({ force: true }), 1800000)
+    setTimeout(() => container.remove({ force: true }), 1800000);
 
     return newContainer;
   }
@@ -85,9 +86,9 @@ export class DockerResolver {
   })
   public containerLogs(
     @Arg('containerId') containerId: string,
-    @Root() stuff: Buffer
+    @Root() buffer: Buffer
   ): String {
-    return stuff.toString();
+    return stripAnsi(buffer.toString());
   }
 
   @Subscription(() => String, {

@@ -79,7 +79,6 @@ export const uiServer = async (ctx: Context, config: Config): Promise<void> => {
   } catch (e) {
     localProps = (await Props) || {};
     sessionProps = [{ path: ctx.path, props: (await Props) || {} }];
-    console.log(e)
   }
 
   const MainApp = (
