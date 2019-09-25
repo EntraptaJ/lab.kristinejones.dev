@@ -4,7 +4,6 @@ import clsx from 'clsx';
 import React from 'react';
 import { useStyles } from 'UI/Routes/Home/Styles';
 import { BaseCard } from 'UI/Components/Style/Cards/BaseCard';
-import { BlogList } from 'UI/Components/BlogList';
 import { Section } from 'UI/Components/Layout/Section';
 
 interface Feature {
@@ -18,7 +17,7 @@ const Features: Feature[] = [
 ];
 
 export default function HomeRoute(): React.ReactElement {
-  const classes = useStyles();
+  const classes = useStyles({});
 
   return (
     <>
