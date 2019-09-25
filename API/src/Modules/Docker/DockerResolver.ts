@@ -14,6 +14,9 @@ import { DockerContainer } from './DockerModel';
 import { filesPubSub } from './FilesPubSub';
 import { Containers, logsPubSub } from './LogsPubSub';
 import { generateContainerArgs } from './Utils/generateArgs';
+import pEvent from 'p-event';
+import { Stream } from 'stream';
+import { pullImage } from './Utils/pullImage';
 
 export const docker = new Docker();
 
@@ -28,7 +31,7 @@ export class DockerResolver {
     @Arg('input')
     input: CreateContainerInput
   ): Promise<DockerContainer> {
-    await docker.pull(input.image, {})
+    await pullImage(input.image)
     const container = await docker.createContainer(
       generateContainerArgs(input)
     );

@@ -44,7 +44,7 @@ const startServer = async (): Promise<void> => {
     }
     return uiServer(ctx, {
       baseUrl: process.env['BASEURL'] as string || 'http://localhost',
-      appName: 'Lab'
+      appName: 'Lab Shell'
     });
   });
 
