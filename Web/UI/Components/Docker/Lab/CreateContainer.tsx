@@ -24,6 +24,7 @@ export function CreateContainerPage(): React.ReactElement {
       if (started && started.data && started.data.startContainer) history.push(`/Lab/Shell/${response.data.createContainer.id}`)
     }
   }, []);
+  
   return (
     <>
       <Form<FormData>

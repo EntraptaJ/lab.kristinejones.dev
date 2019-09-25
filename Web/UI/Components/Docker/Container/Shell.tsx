@@ -28,8 +28,6 @@ export function ContainerShell({
   if (!loading && history[history.length - 1] !== data.containerLogs)
     history.push(data.containerLogs);
 
-  console.log(data);
-
   const handleChange = useCallback(
     ({ target }: ChangeEvent<HTMLInputElement>) => setCommand(target.value),
     [setCommand],

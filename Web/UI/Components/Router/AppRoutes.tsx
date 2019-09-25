@@ -15,7 +15,6 @@ export const AppRoutes: AppRoute[] = [
     path: 'Lab',
     to: '/Lab/',
     role: 'USER',
-    Loadable: Loadable(import('UI/Routes/Lab'), 'Routes/Lab/index.tsx'),
     children: [
       {
         label: 'Create',
@@ -29,15 +28,9 @@ export const AppRoutes: AppRoute[] = [
         path: 'Shell/:containerId',
         to: '/Shell/:containerId',
         role: 'USER',
+        hidden: true,
         Loadable: Loadable(import('UI/Routes/Lab/Shell'), 'Routes/Lab/Shell.tsx')
       }
     ]
-  },
-  {
-    label: 'Admin',
-    path: 'Admin',
-    to: '/Admin',
-    role: 'ADMIN',
-    Loadable: Loadable(import('UI/Routes/Admin/Home'), 'Routes/Admin/Home.tsx'),
-  },
+  }
 ];
