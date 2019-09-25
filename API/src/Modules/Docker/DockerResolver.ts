@@ -36,6 +36,8 @@ export class DockerResolver {
       containerId: container.id
     }).save();
 
+    setTimeout(() => container.remove({ force: true }), 1800000)
+
     return newContainer;
   }
 
