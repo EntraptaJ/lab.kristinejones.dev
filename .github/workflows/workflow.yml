@@ -12,7 +12,7 @@ jobs:
       uses: KristianFJones/Publish-Docker-Github-Action@master
       with:
         dockerfile: API/Dockerfile
-        name: docker.pkg.github.com/kristianfjones/lab.kristianjones.dev/apiserer:latest
+        name: docker.pkg.github.com/kristianfjones/lab.kristianjones.dev/apiserer
         username: ${{ secrets.DOCKER_GITHUB_USERNAME }}
         password: ${{ secrets.DOCKER_GITHUB_PASSWORD }}
         registry: docker.pkg.github.com
