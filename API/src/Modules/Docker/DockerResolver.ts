@@ -28,6 +28,7 @@ export class DockerResolver {
     @Arg('input')
     input: CreateContainerInput
   ): Promise<DockerContainer> {
+    await docker.pull(input.image, {})
     const container = await docker.createContainer(
       generateContainerArgs(input)
     );
